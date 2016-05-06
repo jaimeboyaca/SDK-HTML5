@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Video.js VAST Example</title>
+
+  <script type="text/javascript">
+    var c = window.c || Math.floor(Math.random() * 1e16);
+    //document.write('<script type="text/javascript" src="//cdn-media.brightline.tv/api/src/v1.8.3/brightline.admanager.min.js?'+c+'"><\/script>');
+    document.write('<script type="text/javascript" src="js/brightline.admanager.min.js?'+c+'"><\/script>');
+  </script>
+
+  <script type="text/javascript">
+    var c = window.c || Math.floor(Math.random() * 1e16);
+    document.write('<script type="text/javascript" src="js/brightline-sdk.js?'+c+'"><\/script>');
+  </script>
+
+  <link href="css/video-js.css" rel="stylesheet" type="text/css">
+  <link href="css/videojs.ads.css" rel="stylesheet" type="text/css">
+  <link href="css/videojs.vast.css" rel="stylesheet" type="text/css">
+
+  <style type="text/css">
+    .description {
+      background-color:#eee;
+      border: 1px solid #777;
+      padding: 10px;
+      font-size: .8em;
+      line-height: 1.5em;
+      font-family: Verdana, sans-serif;
+    }
+    .example-video-container {
+      display: inline-block;
+    }
+
+    input { padding:4px; }
+
+  </style>
+  <!--[if lt IE 9]><script src="js/es5.js"></script><![endif]-->
+  <script src="js/video.js"></script>
+  <script src="js/videojs.ads.js"></script>
+
+  <script src="js/vast-client.js"></script>
+  <script src="js/videojs.vast.js"></script>
+</head>
+<body>
+
+
+
+  <div class="example-video-container">
+ 
+
+    <video id="vid1" class="video-js vjs-default-skin" autoplay controls preload="auto"
+        data-setup='{}'
+        width='640'
+        height='360'
+        >
+      <source src="//clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type='video/mp4'>
+      <p>Video Playback Not Supported</p>
+    </video>
+  </div>
+
+  <p>
+    <input type="text" name="vastURL" size="107" id="vastURL" value="http://pubads.g.doubleclick.net/gampad/adx?iu=/52320903/onboarding/html5web&sz=1x1&d_imp=1&c=TIMESTAMP&t=&m=text/xml" />
+    <input type="submit" value="parse VAST" onclick="return parseVAST();" />
+  </p>
+
+  <script>
+    var vid1 = videojs('vid1');
+
+    BL.onMicrositeOpen = function () {
+      console.log('onMicrositeOpen');
+      vid1.pause();
+    };
+
+
+    BL.onMicrositeClose = function () {
+      console.log('onMicrositeClose');
+      vid1.play();
+    };
+
+    function parseVAST(){
+      value = document.getElementById('vastURL').value;
+      vid1.muted(false);
+      vid1.ads();
+      vid1.vast({
+        //url: 'http://pubads.g.doubleclick.net/gampad/adx?iu=/52320903/onboarding/html5web&sz=1x1&d_imp=1&c=TIMESTAMP&t=&m=text/xml',
+        url : value,
+        skip: -1
+      });
+      vid1.play();
+      return
+    }
+
+  </script>
+
+</body>
+</html>
